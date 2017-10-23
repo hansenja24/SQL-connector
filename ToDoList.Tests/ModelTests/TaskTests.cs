@@ -23,7 +23,6 @@ namespace ToDoList.Tests
     {
       //Arrange, Act
       int result = Task.GetAll().Count;
-      Console.WriteLine("result = " + result);
 
       //Assert
       Assert.AreEqual(0, result);
