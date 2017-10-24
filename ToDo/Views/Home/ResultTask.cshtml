@@ -11,5 +11,9 @@
   <button type="submit" class="btn btn-success">Delete All Tasks</button>
 </form>
 
+<form action="/Categories/@Model["category"].GetId()/Delete" method="post">
+  <button type="submit" class="btn btn-success">Delete This Category</button>
+</form>
+
 <a href="/">Go home</a>
 <a href="/Categories/@Model["category"].GetId()/tasks/new">Add Task</a>

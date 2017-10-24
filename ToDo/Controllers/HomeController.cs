@@ -28,13 +28,6 @@ namespace ToDoList.Controllers
         return View (Category.GetAll());
       }
 
-      [HttpPost("/Categories/Delete")]
-      public ActionResult DeletePage()
-      {
-        Category.DeleteAll();
-        return View();
-      }
-
       [HttpGet("/Categories/{id}")]
       public ActionResult ResultTask(int id)
       {
@@ -82,6 +75,20 @@ namespace ToDoList.Controllers
       return View();
     }
 
+    [HttpPost("/Categories/{id}/Delete")]
+    public ActionResult DeleteCategory(int id)
+    {
+      Category.DeleteCategory(id);
+      Task.DeleteTasks(id);
+      return View("DeletePage3");
+    }
+
+    [HttpPost("/Categories/Delete")]
+    public ActionResult DeletePage()
+    {
+      Category.DeleteAll();
+      return View();
+    }
 
     }
   }
