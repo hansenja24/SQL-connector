@@ -11,7 +11,7 @@ namespace ToDoList.Controllers
       [HttpGet("/")]
       public ActionResult Index()
       {
-        return View();
+        return View(Task.GetCount());
       }
 
       [HttpGet("/Categories")]

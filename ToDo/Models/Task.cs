@@ -40,6 +40,8 @@ namespace ToDoList.Models
              return this.GetDescription().GetHashCode();
         }
 
+
+
         public string GetDescription()
         {
             return _description;
@@ -115,6 +117,32 @@ namespace ToDoList.Models
             }
             return allTasks;
         }
+
+        public static int GetCount()
+        {
+            int allCount = 0;
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM tasks;";
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while(rdr.Read())
+            {
+              int taskId = rdr.GetInt32(0);
+              string taskDescription = rdr.GetString(1);
+              int taskCategoryId = rdr.GetInt32(2);
+              string taskDueDate = rdr.GetString(3);
+              Task newTask = new Task(taskDescription, taskCategoryId, taskDueDate, taskId);
+              allCount += 1;
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return allCount;
+        }
+
         public static Task Find(int id)
         {
             MySqlConnection conn = DB.Connection();
