@@ -2,7 +2,7 @@
 
 @foreach (var task in @Model["tasks"])
 {
-<p>@task.GetDescription()</p>
+<p>@task.GetDescription()    @task.GetDueDate()</p>
 }
 
 

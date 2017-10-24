@@ -55,7 +55,7 @@ namespace ToDoList.Controllers
       public ActionResult ResultTask2(int id)
       {
         string taskDescription = Request.Form["inputTask"];
-        Task newTask = new Task(taskDescription,id);
+        Task newTask = new Task(taskDescription,id,(Request.Form["inputDate"]));
         newTask.Save();
 
         Dictionary<string, object> model = new Dictionary<string, object>();

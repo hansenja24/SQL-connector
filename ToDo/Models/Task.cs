@@ -9,12 +9,14 @@ namespace ToDoList.Models
         private string _description;
         private int _id;
         private int _categoryId;
+        private string _dueDate;
 
-        public Task(string description, int categoryId, int id = 0)
+        public Task(string description, int categoryId, string dueDate, int id = 0)
         {
             _description = description;
             _categoryId = categoryId;
             _id = id;
+            _dueDate = dueDate;
         }
 
         public override bool Equals(System.Object otherTask)
@@ -29,7 +31,8 @@ namespace ToDoList.Models
              bool idEquality = this.GetId() == newTask.GetId();
              bool descriptionEquality = this.GetDescription() == newTask.GetDescription();
              bool categoryEquality = this.GetCategoryId() == newTask.GetCategoryId();
-             return (idEquality && descriptionEquality && categoryEquality);
+             bool duedateEquality = this.GetDueDate() == newTask.GetDueDate();
+             return (idEquality && descriptionEquality && categoryEquality && duedateEquality);
            }
         }
         public override int GetHashCode()
@@ -49,13 +52,19 @@ namespace ToDoList.Models
         {
             return _categoryId;
         }
+
+        public string GetDueDate()
+        {
+            return _dueDate;
+        }
+
         public void Save()
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO tasks (description, category_id) VALUES (@description, @category_id);";
+            cmd.CommandText = @"INSERT INTO tasks (description, category_id, duedate) VALUES (@description, @category_id, @dueDate);";
 
             MySqlParameter description = new MySqlParameter();
             description.ParameterName = "@description";
@@ -66,6 +75,11 @@ namespace ToDoList.Models
             categoryId.ParameterName = "@category_id";
             categoryId.Value = this._categoryId;
             cmd.Parameters.Add(categoryId);
+
+            MySqlParameter duedate = new MySqlParameter();
+            duedate.ParameterName = "@dueDate";
+            duedate.Value = this._dueDate;
+            cmd.Parameters.Add(duedate);
 
 
             cmd.ExecuteNonQuery();
@@ -83,14 +97,15 @@ namespace ToDoList.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM tasks;";
+            cmd.CommandText = @"SELECT * FROM tasks ORDER BY duedate;";
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
             while(rdr.Read())
             {
               int taskId = rdr.GetInt32(0);
               string taskDescription = rdr.GetString(1);
               int taskCategoryId = rdr.GetInt32(2);
-              Task newTask = new Task(taskDescription, taskCategoryId, taskId);
+              string taskDueDate = rdr.GetString(3);
+              Task newTask = new Task(taskDescription, taskCategoryId, taskDueDate, taskId);
               allTasks.Add(newTask);
             }
             conn.Close();
@@ -115,6 +130,7 @@ namespace ToDoList.Models
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
             int taskId = 0;
             string taskName = "";
+            string taskDueDate = "";
             int taskCategoryId = 0;
 
             while(rdr.Read())
@@ -122,8 +138,9 @@ namespace ToDoList.Models
               taskId = rdr.GetInt32(0);
               taskName = rdr.GetString(1);
               taskCategoryId = rdr.GetInt32(2);
+              taskDueDate = rdr.GetString(3);
             }
-            Task newTask = new Task(taskName, taskCategoryId, taskId);
+            Task newTask = new Task(taskName, taskCategoryId, taskDueDate, taskId);
             conn.Close();
             if (conn != null)
             {
@@ -173,14 +190,15 @@ namespace ToDoList.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM tasks ORDER BY description;";
+            cmd.CommandText = @"SELECT * FROM tasks ORDER BY duedate;";
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
             while(rdr.Read())
             {
               int taskId = rdr.GetInt32(0);
               string taskDescription = rdr.GetString(1);
               int taskCategoryId = rdr.GetInt32(2);
-              Task newTask = new Task(taskDescription, taskCategoryId, taskId);
+              string taskDueDate = rdr.GetString(3);
+              Task newTask = new Task(taskDescription, taskCategoryId, taskDueDate, taskId);
               allTasks.Add(newTask);
             }
             conn.Close();
