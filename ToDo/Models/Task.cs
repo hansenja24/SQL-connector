@@ -164,6 +164,32 @@ namespace ToDoList.Models
             {
                 conn.Dispose();
             }
-          }
+        }
+
+
+        public static List<Task> GetAlphaList()
+        {
+            List<Task> allTasks = new List<Task> {};
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM tasks ORDER BY description;";
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while(rdr.Read())
+            {
+              int taskId = rdr.GetInt32(0);
+              string taskDescription = rdr.GetString(1);
+              int taskCategoryId = rdr.GetInt32(2);
+              Task newTask = new Task(taskDescription, taskCategoryId, taskId);
+              allTasks.Add(newTask);
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return allTasks;
+        }
+
     }
 }

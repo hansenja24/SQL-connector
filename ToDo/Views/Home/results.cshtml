@@ -3,6 +3,14 @@
 <p><a href="Categories/@Category.GetId()">@Category.GetName()</a></p>
 }
 
+<br>
+
+<form action="/Categories" method="post">
+  <label for="inputCategory">Add another category:</label>
+  <input name="inputCategory" class="form-control" id="inputCategory">
+  <button type="submit" class="btn btn-success">Go.</button>
+</form>
+
 <form action="/Categories/Delete" method="post">
   <button type="submit" class="btn btn-success">Delete All Categories</button>
 </form>

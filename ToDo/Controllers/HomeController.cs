@@ -66,29 +66,35 @@ namespace ToDoList.Controllers
 
 
         return View("ResultTask", model);
-    }
+      }
 
-    [HttpPost("/Tasks/Delete")]
-    public ActionResult DeletePage2()
-    {
-      Task.DeleteAll();
-      return View();
-    }
+      [HttpPost("/Tasks/Delete")]
+      public ActionResult DeletePage2()
+      {
+        Task.DeleteAll();
+        return View();
+      }
 
-    [HttpPost("/Categories/{id}/Delete")]
-    public ActionResult DeleteCategory(int id)
-    {
-      Category.DeleteCategory(id);
-      Task.DeleteTasks(id);
-      return View("DeletePage3");
-    }
+      [HttpPost("/Categories/{id}/Delete")]
+      public ActionResult DeleteCategory(int id)
+      {
+        Category.DeleteCategory(id);
+        Task.DeleteTasks(id);
+        return View("DeletePage3");
+      }
 
-    [HttpPost("/Categories/Delete")]
-    public ActionResult DeletePage()
-    {
-      Category.DeleteAll();
-      return View();
-    }
+      [HttpPost("/Categories/Delete")]
+      public ActionResult DeletePage()
+      {
+        Category.DeleteAll();
+        return View();
+      }
+
+      [HttpGet("/TaskList")]
+      public ActionResult AlphaList()
+      {
+        return View(Task.GetAlphaList());
+      }
 
     }
   }
