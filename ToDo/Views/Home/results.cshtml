@@ -1,4 +1,10 @@
-@foreach (task in Model)
+@foreach (var Category in Model)
 {
-task.GetAll()
+<p><a href="Categories/@Category.GetId()">@Category.GetName()</a></p>
 }
+
+<form action="/Categories/Delete" method="post">
+  <button type="submit" class="btn btn-success">Delete All Categories</button>
+</form>
+
+<a href="/">Go home</a>

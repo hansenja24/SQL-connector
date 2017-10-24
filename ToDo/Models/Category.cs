@@ -13,6 +13,7 @@ namespace ToDoList.Models
             _name = name;
             _id = id;
         }
+
         public override bool Equals(System.Object otherCategory)
         {
             if (!(otherCategory is Category))
